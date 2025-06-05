@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block title %}تنفيذ الخوارزمية - تطبيق Gradient Descent الرسومي{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="mb-0">تنفيذ خوارزمية Gradient Descent</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success" role="alert">
+                    <h5 class="alert-heading">البيانات جاهزة!</h5>
+                    <p class="mb-0">
+                        تم تهيئة البيانات بنجاح. الآن يمكنك اختيار نوع النموذج ومعاملات الخوارزمية.
+                    </p>
+                </div>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <!-- Model Type Selection -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">اختيار نوع النموذج</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="{{ form.model_type.id_for_label }}" class="form-label">
+                                    {{ form.model_type.label }}
+                                </label>
+                                {{ form.model_type }}
+                                {% if form.model_type.errors %}
+                                    <div class="text-danger mt-2">
+                                        {% for error in form.model_type.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="alert alert-info" role="alert">
+                                        <h6 class="alert-heading">الانحدار الخطي</h6>
+                                        <small>
+                                            مناسب للتنبؤ بالقيم المستمرة<br>
+                                            مثال: التنبؤ بأسعار المنازل، درجات الحرارة
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-warning" role="alert">
+                                        <h6 class="alert-heading">الانحدار اللوجستي</h6>
+                                        <small>
+                                            مناسب للتصنيف الثنائي<br>
+                                            مثال: تصنيف البريد الإلكتروني (spam/not spam)
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Algorithm Parameters -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">معاملات الخوارزمية</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="{{ form.learning_rate.id_for_label }}" class="form-label">
+                                            {{ form.learning_rate.label }}
+                                        </label>
+                                        {{ form.learning_rate }}
+                                        {% if form.learning_rate.errors %}
+                                            <div class="text-danger mt-2">
+                                                {% for error in form.learning_rate.errors %}
+                                                    <small>{{ error }}</small>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">
+                                            يتحكم في سرعة التعلم. القيم الصغيرة أبطأ لكن أكثر استقراراً
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="{{ form.num_iterations.id_for_label }}" class="form-label">
+                                            {{ form.num_iterations.label }}
+                                        </label>
+                                        {{ form.num_iterations }}
+                                        {% if form.num_iterations.errors %}
+                                            <div class="text-danger mt-2">
+                                                {% for error in form.num_iterations.errors %}
+                                                    <small>{{ error }}</small>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">
+                                            عدد مرات تحديث المعاملات. المزيد يعني تدريب أطول
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-light" role="alert">
+                                <h6 class="text-primary">نصائح لاختيار المعاملات:</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>معدل التعلم (α):</strong>
+                                        <ul class="mb-0 mt-2">
+                                            <li>ابدأ بـ 0.01 للبيانات العادية</li>
+                                            <li>استخدم 0.001 للبيانات الكبيرة</li>
+                                            <li>استخدم 0.1 للبيانات الصغيرة</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>عدد التكرارات:</strong>
+                                        <ul class="mb-0 mt-2">
+                                            <li>1000 تكرار عادة كافي</li>
+                                            <li>زد العدد إذا لم تتقارب الخوارزمية</li>
+                                            <li>قلل العدد للاختبار السريع</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button type="submit" class="btn btn-primary btn-lg me-md-2" id="run-algorithm-btn">
+                            <i class="fas fa-play me-2"></i>
+                            تنفيذ الخوارزمية
+                        </button>
+                        <a href="{% url 'core:preprocessing' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            العودة للتهيئة
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Algorithm Explanation -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">كيف تعمل خوارزمية Gradient Descent؟</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p>
+                                    خوارزمية Gradient Descent هي طريقة تحسين تستخدم لإيجاد أفضل قيم للمعاملات (θ) 
+                                    التي تقلل من دالة التكلفة (Cost Function).
+                                </p>
+                                
+                                <h6 class="text-primary">خطوات الخوارزمية:</h6>
+                                <ol>
+                                    <li><strong>التهيئة:</strong> ابدأ بقيم عشوائية للمعاملات</li>
+                                    <li><strong>حساب التنبؤات:</strong> استخدم المعاملات الحالية للتنبؤ</li>
+                                    <li><strong>حساب التكلفة:</strong> قارن التنبؤات بالقيم الحقيقية</li>
+                                    <li><strong>حساب التدرج:</strong> احسب اتجاه التحسين</li>
+                                    <li><strong>تحديث المعاملات:</strong> حرك المعاملات في اتجاه التحسين</li>
+                                    <li><strong>التكرار:</strong> كرر الخطوات حتى التقارب</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title">معادلة التحديث</h6>
+                                        <div class="equation">
+                                            θ = θ - α × ∇J(θ)
+                                        </div>
+                                        <small class="text-muted">
+                                            حيث:<br>
+                                            θ = المعاملات<br>
+                                            α = معدل التعلم<br>
+                                            ∇J(θ) = تدرج دالة التكلفة
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Animation (Hidden by default) -->
+                <div id="loading-animation" class="text-center mt-4" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">جاري التنفيذ...</span>
+                    </div>
+                    <p class="mt-2">جاري تنفيذ الخوارزمية، يرجى الانتظار...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const runButton = document.getElementById('run-algorithm-btn');
+    const loadingAnimation = document.getElementById('loading-animation');
+    
+    form.addEventListener('submit', function() {
+        runButton.disabled = true;
+        runButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري التنفيذ...';
+        loadingAnimation.style.display = 'block';
+    });
+});
+</script>
+
+<style>
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #77ACA2;
+    box-shadow: 0 0 0 0.2rem rgba(119, 172, 162, 0.25);
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.alert {
+    border-radius: 10px;
+}
+
+.equation {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #77ACA2;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    border: 2px solid #A7C4BC;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+#loading-animation {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+{% endblock %}

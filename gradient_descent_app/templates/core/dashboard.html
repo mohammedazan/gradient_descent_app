@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}إحصائيات البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="mb-0">إحصائيات البيانات</h2>
+                <p class="mb-0 text-light">الملف: {{ file_name }}</p>
+            </div>
+            <div class="card-body">
+                <!-- Dataset Overview -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ dataset_info.shape.0 }}</h4>
+                                <p class="mb-0">عدد الصفوف</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ dataset_info.shape.1 }}</h4>
+                                <p class="mb-0">عدد الأعمدة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ dataset_info.total_missing }}</h4>
+                                <p class="mb-0">القيم المفقودة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ stats|length }}</h4>
+                                <p class="mb-0">الأعمدة الرقمية</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">معلومات الأعمدة</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>اسم العمود</th>
+                                        <th>نوع البيانات</th>
+                                        <th>الوصف</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for column in dataset_info.columns %}
+                                        <tr>
+                                            <td><strong>{{ column }}</strong></td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    {{ dataset_info.dtypes|lookup:column }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {% if forloop.last %}
+                                                    <span class="badge bg-primary">متغير تابع (Target)</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">متغير مستقل (Feature)</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descriptive Statistics -->
+                {% if stats %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">الإحصائيات الوصفية للأعمدة الرقمية</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>اسم العمود</th>
+                                        <th>المتوسط</th>
+                                        <th>الوسيط</th>
+                                        <th>الانحراف المعياري</th>
+                                        <th>أقل قيمة</th>
+                                        <th>أكبر قيمة</th>
+                                        <th>القيم المفقودة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for column, stat in stats.items %}
+                                        <tr>
+                                            <td><strong>{{ column }}</strong></td>
+                                            <td>{{ stat.mean|floatformat:3 }}</td>
+                                            <td>{{ stat.median|floatformat:3 }}</td>
+                                            <td>{{ stat.std|floatformat:3 }}</td>
+                                            <td>{{ stat.min|floatformat:3 }}</td>
+                                            <td>{{ stat.max|floatformat:3 }}</td>
+                                            <td>
+                                                {% if stat.null_count > 0 %}
+                                                    <span class="badge bg-warning">{{ stat.null_count }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">0</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <h5 class="alert-heading">تنبيه!</h5>
+                    لا توجد أعمدة رقمية في البيانات. تأكد من أن ملف البيانات يحتوي على قيم رقمية.
+                </div>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="{% url 'core:preprocessing' %}" class="btn btn-primary btn-lg me-md-2">
+                        <i class="fas fa-cogs me-2"></i>
+                        المتابعة إلى التهيئة
+                    </a>
+                    <a href="{% url 'core:upload' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-upload me-2"></i>
+                        رفع ملف آخر
+                    </a>
+                </div>
+
+                <!-- Data Quality Assessment -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">تقييم جودة البيانات</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary">حالة البيانات:</h6>
+                                {% if dataset_info.total_missing == 0 %}
+                                    <div class="alert alert-success" role="alert">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        البيانات كاملة - لا توجد قيم مفقودة
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning" role="alert">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        توجد {{ dataset_info.total_missing }} قيمة مفقودة تحتاج للمعالجة
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary">توصيات:</h6>
+                                <ul class="list-unstyled">
+                                    {% if dataset_info.total_missing > 0 %}
+                                        <li><i class="fas fa-arrow-left text-warning me-2"></i>قم بمعالجة القيم المفقودة في خطوة التهيئة</li>
+                                    {% endif %}
+                                    {% if stats|length > 0 %}
+                                        <li><i class="fas fa-arrow-left text-info me-2"></i>فكر في تطبيق التطبيع على البيانات</li>
+                                    {% endif %}
+                                    <li><i class="fas fa-arrow-left text-success me-2"></i>تأكد من أن العمود الأخير هو المتغير التابع</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.table th {
+    background-color: #A7C4BC;
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.badge {
+    font-size: 0.8rem;
+}
+
+.alert {
+    border-radius: 10px;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-body .card {
+    margin-bottom: 1rem;
+}
+
+.card-body .card:last-child {
+    margin-bottom: 0;
+}
+</style>
+
+<!-- Custom template filter for dictionary lookup -->
+{% load custom_filters %}
+{% endblock %}

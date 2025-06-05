@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}تهيئة البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="mb-0">تهيئة ومعالجة البيانات</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info" role="alert">
+                    <h5 class="alert-heading">خطوة مهمة!</h5>
+                    <p class="mb-0">
+                        تهيئة البيانات خطوة أساسية لضمان الحصول على أفضل النتائج من خوارزمية Gradient Descent.
+                        اختر الخيارات المناسبة لبياناتك.
+                    </p>
+                </div>
+
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <!-- Missing Values Handling -->
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">معالجة القيم المفقودة</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="{{ form.missing_values.id_for_label }}" class="form-label">
+                                            {{ form.missing_values.label }}
+                                        </label>
+                                        {{ form.missing_values }}
+                                        {% if form.missing_values.errors %}
+                                            <div class="text-danger mt-2">
+                                                {% for error in form.missing_values.errors %}
+                                                    <small>{{ error }}</small>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="mb-3" id="fill-value-container" style="display: none;">
+                                        <label for="{{ form.fill_value.id_for_label }}" class="form-label">
+                                            {{ form.fill_value.label }}
+                                        </label>
+                                        {{ form.fill_value }}
+                                        {% if form.fill_value.errors %}
+                                            <div class="text-danger mt-2">
+                                                {% for error in form.fill_value.errors %}
+                                                    <small>{{ error }}</small>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-text">
+                                            أدخل القيمة التي تريد استخدامها لملء القيم المفقودة
+                                        </div>
+                                    </div>
+
+                                    <div class="alert alert-light" role="alert">
+                                        <small>
+                                            <strong>حذف الصفوف:</strong> إزالة الصفوف التي تحتوي على قيم مفقودة<br>
+                                            <strong>ملء بالمتوسط:</strong> استبدال القيم المفقودة بمتوسط العمود<br>
+                                            <strong>ملء بقيمة ثابتة:</strong> استبدال القيم المفقودة بقيمة محددة
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scaling Method -->
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">طريقة التطبيع</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="{{ form.scaling_method.id_for_label }}" class="form-label">
+                                            {{ form.scaling_method.label }}
+                                        </label>
+                                        {{ form.scaling_method }}
+                                        {% if form.scaling_method.errors %}
+                                            <div class="text-danger mt-2">
+                                                {% for error in form.scaling_method.errors %}
+                                                    <small>{{ error }}</small>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="alert alert-light" role="alert">
+                                        <small>
+                                            <strong>التطبيع المعياري:</strong> (x - mean) / std<br>
+                                            يجعل البيانات بمتوسط 0 وانحراف معياري 1<br><br>
+                                            <strong>تطبيع Min-Max:</strong> (x - min) / (max - min)<br>
+                                            يجعل البيانات في المدى [0, 1]
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categorical Encoding -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">تشفير المتغيرات الفئوية</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check">
+                                {{ form.categorical_encoding }}
+                                <label class="form-check-label" for="{{ form.categorical_encoding.id_for_label }}">
+                                    {{ form.categorical_encoding.label }}
+                                </label>
+                            </div>
+                            {% if form.categorical_encoding.errors %}
+                                <div class="text-danger mt-2">
+                                    {% for error in form.categorical_encoding.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text mt-2">
+                                يحول المتغيرات النصية (مثل: ذكر/أنثى) إلى متغيرات رقمية باستخدام One-Hot Encoding
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button type="submit" class="btn btn-primary btn-lg me-md-2">
+                            <i class="fas fa-cogs me-2"></i>
+                            تنفيذ التهيئة
+                        </button>
+                        <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            العودة للإحصائيات
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Tips Section -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">نصائح للحصول على أفضل النتائج</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-primary">معالجة القيم المفقودة:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>إذا كانت القيم المفقودة قليلة (&lt;5%)، استخدم حذف الصفوف</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>للبيانات الرقمية، الملء بالمتوسط خيار جيد</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>استخدم القيمة الثابتة إذا كنت تعرف قيمة منطقية للملء</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-primary">التطبيع:</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>التطبيع المعياري مناسب للبيانات ذات التوزيع الطبيعي</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Min-Max مناسب عندما تريد الحفاظ على العلاقات النسبية</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>التطبيع مهم جداً لضمان تقارب سريع للخوارزمية</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const missingValuesSelect = document.getElementById('{{ form.missing_values.id_for_label }}');
+    const fillValueContainer = document.getElementById('fill-value-container');
+    
+    function toggleFillValue() {
+        if (missingValuesSelect.value === 'constant') {
+            fillValueContainer.style.display = 'block';
+        } else {
+            fillValueContainer.style.display = 'none';
+        }
+    }
+    
+    missingValuesSelect.addEventListener('change', toggleFillValue);
+    toggleFillValue(); // Initial check
+});
+</script>
+
+<style>
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #77ACA2;
+    box-shadow: 0 0 0 0.2rem rgba(119, 172, 162, 0.25);
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.alert {
+    border-radius: 10px;
+}
+
+.form-check-input:checked {
+    background-color: #77ACA2;
+    border-color: #77ACA2;
+}
+
+.form-check-input:focus {
+    border-color: #77ACA2;
+    box-shadow: 0 0 0 0.2rem rgba(119, 172, 162, 0.25);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}رفع البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="mb-0">رفع ملف البيانات</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info" role="alert">
+                    <h5 class="alert-heading">متطلبات الملف:</h5>
+                    <ul class="mb-0">
+                        <li>يجب أن يكون الملف بصيغة CSV</li>
+                        <li>حجم الملف أقل من 5 ميجابايت</li>
+                        <li>العمود الأخير يُعتبر المتغير التابع (Target Variable)</li>
+                        <li>باقي الأعمدة تُعتبر المتغيرات المستقلة (Features)</li>
+                    </ul>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.file.id_for_label }}" class="form-label">
+                            {{ form.file.label }}
+                        </label>
+                        {{ form.file }}
+                        {% if form.file.errors %}
+                            <div class="text-danger mt-2">
+                                {% for error in form.file.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="form-text">
+                            اختر ملف CSV يحتوي على البيانات التي تريد تحليلها
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button type="submit" class="btn btn-primary btn-lg me-md-2">
+                            <i class="fas fa-upload me-2"></i>
+                            رفع الملف
+                        </button>
+                        <a href="{% url 'core:home' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            العودة للرئيسية
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Sample Data Section -->
+                <div class="mt-5">
+                    <h4 class="text-secondary mb-3">مثال على تنسيق البيانات:</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Feature_1</th>
+                                    <th>Feature_2</th>
+                                    <th>Feature_3</th>
+                                    <th>Target</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.2</td>
+                                    <td>3.4</td>
+                                    <td>5.6</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2.1</td>
+                                    <td>4.3</td>
+                                    <td>6.5</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>3.0</td>
+                                    <td>5.2</td>
+                                    <td>7.4</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-muted">
+                        <small>
+                            في هذا المثال، Feature_1 و Feature_2 و Feature_3 هي المتغيرات المستقلة، 
+                            و Target هو المتغير التابع الذي نريد التنبؤ به.
+                        </small>
+                    </p>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="mt-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">نصائح مهمة:</h5>
+                            <ul class="mb-0">
+                                <li>تأكد من أن البيانات نظيفة ومنظمة</li>
+                                <li>للانحدار الخطي: المتغير التابع يجب أن يكون رقمي مستمر</li>
+                                <li>للانحدار اللوجستي: المتغير التابع يجب أن يكون ثنائي (0 أو 1)</li>
+                                <li>تجنب وجود أعمدة فارغة أو بيانات غير صحيحة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control[type="file"] {
+    padding: 0.75rem;
+    border: 2px dashed #A7C4BC;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.form-control[type="file"]:hover {
+    border-color: #77ACA2;
+    background-color: #e9ecef;
+}
+
+.form-control[type="file"]:focus {
+    border-color: #77ACA2;
+    box-shadow: 0 0 0 0.2rem rgba(119, 172, 162, 0.25);
+}
+
+.table th {
+    background-color: #A7C4BC;
+    color: white;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+</style>
+{% endblock %}

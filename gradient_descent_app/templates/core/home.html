@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}الرئيسية - تطبيق Gradient Descent الرسومي{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1 class="mb-0">مرحباً بك في تطبيق Gradient Descent الرسومي</h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="text-primary mb-3">حول التطبيق</h3>
+                        <p class="lead">
+                            تطبيق Gradient Descent يتيح رفع البيانات وتحليلها وتنفيذ الانحدار والتصنيف باستخدام خوارزمية Gradient Descent.
+                        </p>
+                        
+                        <h4 class="text-secondary mt-4 mb-3">الميزات الرئيسية:</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-upload text-primary me-2"></i>
+                                رفع ملفات CSV وتحليلها
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-chart-bar text-primary me-2"></i>
+                                عرض الإحصائيات الوصفية للبيانات
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-cogs text-primary me-2"></i>
+                                معالجة البيانات وتهيئتها (القيم المفقودة، التطبيع، التشفير)
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-brain text-primary me-2"></i>
+                                تنفيذ الانحدار الخطي واللوجستي باستخدام Gradient Descent
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-chart-line text-primary me-2"></i>
+                                عرض منحنى التعلم ونتائج الأداء
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'core:upload' %}" class="btn btn-primary btn-lg me-3">
+                                ابدأ الآن - رفع البيانات
+                            </a>
+                            <a href="#instructions" class="btn btn-outline-secondary btn-lg">
+                                تعليمات الاستخدام
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5 class="card-title text-primary">خطوات الاستخدام</h5>
+                                <div class="step-item mb-3">
+                                    <div class="step-number">1</div>
+                                    <p class="step-text">رفع ملف CSV</p>
+                                </div>
+                                <div class="step-item mb-3">
+                                    <div class="step-number">2</div>
+                                    <p class="step-text">مراجعة الإحصائيات</p>
+                                </div>
+                                <div class="step-item mb-3">
+                                    <div class="step-number">3</div>
+                                    <p class="step-text">تهيئة البيانات</p>
+                                </div>
+                                <div class="step-item mb-3">
+                                    <div class="step-number">4</div>
+                                    <p class="step-text">تنفيذ الخوارزمية</p>
+                                </div>
+                                <div class="step-item">
+                                    <div class="step-number">5</div>
+                                    <p class="step-text">مراجعة النتائج</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instructions Section -->
+        <div class="card mt-4" id="instructions">
+            <div class="card-header">
+                <h3 class="mb-0">تعليمات الاستخدام التفصيلية</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-primary">متطلبات ملف البيانات:</h5>
+                        <ul>
+                            <li>يجب أن يكون الملف بصيغة CSV</li>
+                            <li>حجم الملف أقل من 5 ميجابايت</li>
+                            <li>العمود الأخير يُعتبر المتغير التابع (Target)</li>
+                            <li>باقي الأعمدة تُعتبر المتغيرات المستقلة (Features)</li>
+                        </ul>
+                        
+                        <h5 class="text-primary mt-4">أنواع النماذج المدعومة:</h5>
+                        <ul>
+                            <li><strong>الانحدار الخطي:</strong> للتنبؤ بالقيم المستمرة</li>
+                            <li><strong>الانحدار اللوجستي:</strong> للتصنيف الثنائي</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5 class="text-primary">خيارات معالجة البيانات:</h5>
+                        <ul>
+                            <li><strong>القيم المفقودة:</strong> حذف، ملء بالمتوسط، أو ملء بقيمة ثابتة</li>
+                            <li><strong>التطبيع:</strong> التطبيع المعياري أو Min-Max</li>
+                            <li><strong>التشفير:</strong> تحويل المتغيرات الفئوية إلى رقمية</li>
+                        </ul>
+                        
+                        <h5 class="text-primary mt-4">معاملات الخوارزمية:</h5>
+                        <ul>
+                            <li><strong>معدل التعلم (α):</strong> يتحكم في سرعة التعلم</li>
+                            <li><strong>عدد التكرارات:</strong> عدد مرات تحديث المعاملات</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.step-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background-color: #77ACA2;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.step-text {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.list-group-item {
+    border: none;
+    padding: 0.75rem 0;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
