@@ -3,7 +3,7 @@ from django.template.defaulttags import register
 
 class UploadFileForm(forms.Form):
     file = forms.FileField(
-        label="اختر ملف CSV",
+        label="Choisissez un fichier CSV",
         widget=forms.FileInput(attrs={
             'class': 'form-control',
             'accept': '.csv'
@@ -12,58 +12,58 @@ class UploadFileForm(forms.Form):
 
 class PreprocessingForm(forms.Form):
     MISSING_VALUE_CHOICES = [
-        ('drop', 'حذف الصفوف التي تحتوي على قيم مفقودة'),
-        ('mean', 'ملء بالمتوسط'),
-        ('constant', 'ملء بقيمة ثابتة'),
+        ('drop', 'Supprimer les lignes contenant des valeurs manquantes'),
+        ('mean', 'Remplir avec la moyenne'),
+        ('constant', 'Remplir avec une valeur constante'),
     ]
     
     SCALING_CHOICES = [
-        ('standard', 'التطبيع المعياري (Standard Scaling)'),
-        ('minmax', 'تطبيع Min-Max'),
+        ('standard', 'Normalisation standard (Standard Scaling)'),
+        ('minmax', 'Normalisation Min-Max'),
     ]
     
     missing_values = forms.ChoiceField(
         choices=MISSING_VALUE_CHOICES,
-        label="معالجة القيم المفقودة",
+        label="Traitement des valeurs manquantes",
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     
     fill_value = forms.FloatField(
         required=False,
-        label="القيمة الثابتة للملء",
+        label="Valeur constante de remplissage",
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
-            'placeholder': 'أدخل القيمة الثابتة'
+            'placeholder': 'Entrez la valeur constante'
         })
     )
     
     scaling_method = forms.ChoiceField(
         choices=SCALING_CHOICES,
-        label="طريقة التطبيع",
+        label="Méthode de normalisation",
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     
     categorical_encoding = forms.BooleanField(
         required=False,
-        label="تشفير المتغيرات الفئوية",
+        label="Encodage des variables catégorielles",
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
 
 class AlgorithmForm(forms.Form):
     MODEL_CHOICES = [
-        ('linear', 'الانحدار الخطي (Linear Regression)'),
-        ('logistic', 'الانحدار اللوجستي (Logistic Regression)'),
+        ('linear', 'Régression linéaire (Linear Regression)'),
+        ('logistic', 'Régression logistique (Logistic Regression)'),
     ]
     
     model_type = forms.ChoiceField(
         choices=MODEL_CHOICES,
-        label="نوع النموذج",
+        label="Type de modèle",
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     
     learning_rate = forms.FloatField(
         initial=0.01,
-        label="معدل التعلم (α)",
+        label="Taux d'apprentissage (α)",
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'step': '0.001',
@@ -74,7 +74,7 @@ class AlgorithmForm(forms.Form):
     
     num_iterations = forms.IntegerField(
         initial=1000,
-        label="عدد التكرارات",
+        label="Nombre d'itérations",
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'min': '100',

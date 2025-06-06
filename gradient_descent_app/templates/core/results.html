@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
 
-{% block title %}النتائج - تطبيق Gradient Descent الرسومي{% endblock %}
+{% block title %}Résultats - Application Gradient Descent Graphique{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">نتائج خوارزمية Gradient Descent</h2>
+                <h2 class="mb-0">Résultats de l'algorithme Gradient Descent</h2>
                 <p class="mb-0 text-light">
-                    النموذج: 
+                    Modèle :
                     {% if results.model_type == 'linear' %}
-                        الانحدار الخطي
+                        Régression linéaire
                     {% else %}
-                        الانحدار اللوجستي
+                        Régression logistique
                     {% endif %}
                 </p>
             </div>
@@ -25,7 +25,7 @@
                         <div class="card bg-info text-white">
                             <div class="card-body text-center">
                                 <h5>{{ results.learning_rate }}</h5>
-                                <p class="mb-0">معدل التعلم (α)</p>
+                                <p class="mb-0">Taux d'apprentissage (α)</p>
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                         <div class="card bg-success text-white">
                             <div class="card-body text-center">
                                 <h5>{{ results.num_iterations }}</h5>
-                                <p class="mb-0">عدد التكرارات</p>
+                                <p class="mb-0">Nombre d'itérations</p>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                         <div class="card bg-primary text-white">
                             <div class="card-body text-center">
                                 <h5>{{ results.theta|length }}</h5>
-                                <p class="mb-0">عدد المعاملات</p>
+                                <p class="mb-0">Nombre de paramètres</p>
                             </div>
                         </div>
                     </div>
@@ -49,9 +49,9 @@
 
                 <!-- Model Performance -->
                 <div class="results-section">
-                    <h3 class="text-center mb-4">أداء النموذج</h3>
+                    <h3 class="text-center mb-4">Performance du modèle</h3>
                     <div class="performance-metric">
-                        {{ results.performance.metric }}: 
+                        {{ results.performance.metric }} :
                         {% if results.performance.metric == 'MSE' %}
                             {{ results.performance.value|floatformat:6 }}
                         {% else %}
@@ -62,22 +62,22 @@
                     
                     {% if results.performance.metric == 'MSE' %}
                         <div class="alert alert-info mt-3" role="alert">
-                            <strong>متوسط مربع الخطأ (MSE):</strong> 
-                            يقيس متوسط مربعات الفروق بين القيم المتنبأ بها والقيم الحقيقية. 
-                            القيم الأقل تعني أداء أفضل.
+                            <strong>Erreur quadratique moyenne (MSE) :</strong>
+                            Mesure la moyenne des carrés des différences entre les valeurs prédites et les valeurs réelles.
+                            Des valeurs plus faibles signifient de meilleures performances.
                         </div>
                     {% else %}
                         <div class="alert alert-success mt-3" role="alert">
-                            <strong>الدقة (Accuracy):</strong> 
-                            نسبة التنبؤات الصحيحة من إجمالي التنبؤات. 
-                            القيم الأعلى تعني أداء أفضل.
+                            <strong>Précision (Accuracy) :</strong>
+                            Proportion de prédictions correctes par rapport au total des prédictions.
+                            Des valeurs plus élevées signifient de meilleures performances.
                         </div>
                     {% endif %}
                 </div>
 
                 <!-- Model Parameters (Theta) -->
                 <div class="results-section">
-                    <h3 class="text-center mb-4">المعاملات النهائية (θ)</h3>
+                    <h3 class="text-center mb-4">Paramètres finaux (θ)</h3>
                     <div class="theta-values">
                         <div class="row">
                             {% for theta_value in results.theta %}
@@ -86,7 +86,7 @@
                                         <div class="card-body text-center">
                                             <h6 class="card-title">
                                                 {% if forloop.first %}
-                                                    θ₀ (Bias)
+                                                    θ₀ (Biais)
                                                 {% else %}
                                                     θ{{ forloop.counter0 }}
                                                 {% endif %}
@@ -102,36 +102,36 @@
                     </div>
                     
                     <div class="alert alert-light mt-3" role="alert">
-                        <strong>تفسير المعاملات:</strong><br>
-                        • <strong>θ₀ (Bias):</strong> المعامل الثابت الذي يحدد نقطة تقاطع النموذج<br>
-                        • <strong>θ₁, θ₂, ...</strong> معاملات المتغيرات المستقلة التي تحدد تأثير كل متغير على النتيجة
+                        <strong>Interprétation des paramètres :</strong><br>
+                        • <strong>θ₀ (Biais) :</strong> Le paramètre constant qui détermine le point d'intersection du modèle<br>
+                        • <strong>θ₁, θ₂, ...</strong> Paramètres des variables indépendantes qui déterminent l'effet de chaque variable sur le résultat
                     </div>
                 </div>
 
                 <!-- Learning Curve -->
                 <div class="results-section">
-                    <h3 class="text-center mb-4">منحنى التعلم</h3>
+                    <h3 class="text-center mb-4">Courbe d'apprentissage</h3>
                     <div class="learning-curve-container">
-                        <img src="data:image/png;base64,{{ results.learning_curve_image }}" 
-                             alt="Learning Curve" 
+                        <img src="data:image/png;base64,{{ results.learning_curve_image }}"
+                             alt="Courbe d'apprentissage"
                              class="img-fluid">
                     </div>
                     
                     <div class="alert alert-info mt-3" role="alert">
-                        <strong>منحنى التعلم:</strong> 
-                        يوضح كيف تنخفض دالة التكلفة مع كل تكرار. 
-                        المنحنى المتنازل يدل على أن الخوارزمية تتعلم بشكل صحيح.
-                        إذا كان المنحنى مسطحاً في النهاية، فهذا يعني أن الخوارزمية وصلت للتقارب.
+                        <strong>Courbe d'apprentissage :</strong>
+                        Montre comment la fonction de coût diminue à chaque itération.
+                        Une courbe descendante indique que l'algorithme apprend correctement.
+                        Si la courbe est plate à la fin, cela signifie que l'algorithme a atteint la convergence.
                     </div>
                 </div>
 
                 <!-- Model Equation -->
                 <div class="results-section">
-                    <h3 class="text-center mb-4">معادلة النموذج النهائية</h3>
+                    <h3 class="text-center mb-4">Équation finale du modèle</h3>
                     <div class="card bg-light">
                         <div class="card-body text-center">
                             {% if results.model_type == 'linear' %}
-                                <h5 class="text-primary">معادلة الانحدار الخطي:</h5>
+                                <h5 class="text-primary">Équation de régression linéaire :</h5>
                                 <div class="equation">
                                     y = {{ results.theta.0|floatformat:3 }}
                                     {% for theta_value in results.theta %}
@@ -142,7 +142,7 @@
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <h5 class="text-primary">معادلة الانحدار اللوجستي:</h5>
+                                <h5 class="text-primary">Équation de régression logistique :</h5>
                                 <div class="equation">
                                     P(y=1) = 1 / (1 + e^(-({{ results.theta.0|floatformat:3 }}
                                     {% for theta_value in results.theta %}
@@ -161,41 +161,41 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
                     <a href="{% url 'core:algorithm' %}" class="btn btn-primary btn-lg me-md-2">
                         <i class="fas fa-redo me-2"></i>
-                        تجربة معاملات أخرى
+                        Essayer d'autres paramètres
                     </a>
                     <a href="{% url 'core:preprocessing' %}" class="btn btn-outline-secondary btn-lg me-md-2">
                         <i class="fas fa-cogs me-2"></i>
-                        تغيير التهيئة
+                        Modifier la préparation
                     </a>
                     <a href="{% url 'core:upload' %}" class="btn btn-outline-info btn-lg">
                         <i class="fas fa-upload me-2"></i>
-                        رفع بيانات جديدة
+                        Importer de nouvelles données
                     </a>
                 </div>
 
                 <!-- Tips for Improvement -->
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="mb-0">نصائح لتحسين النتائج</h5>
+                        <h5 class="mb-0">Conseils pour améliorer les résultats</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6 class="text-primary">إذا كان الأداء ضعيفاً:</h6>
+                                <h6 class="text-primary">Si les performances sont faibles :</h6>
                                 <ul>
-                                    <li>جرب معدل تعلم مختلف (أكبر أو أصغر)</li>
-                                    <li>زد عدد التكرارات</li>
-                                    <li>تأكد من تطبيق التطبيع على البيانات</li>
-                                    <li>تحقق من جودة البيانات الأصلية</li>
+                                    <li>Essayez un taux d'apprentissage différent (plus grand ou plus petit)</li>
+                                    <li>Augmentez le nombre d'itérations</li>
+                                    <li>Assurez-vous d'appliquer la normalisation aux données</li>
+                                    <li>Vérifiez la qualité des données originales</li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-primary">إذا لم تتقارب الخوارزمية:</h6>
+                                <h6 class="text-primary">Si l'algorithme ne converge pas :</h6>
                                 <ul>
-                                    <li>قلل معدل التعلم</li>
-                                    <li>تأكد من تطبيق التطبيع</li>
-                                    <li>تحقق من وجود قيم شاذة في البيانات</li>
-                                    <li>جرب طريقة تطبيع مختلفة</li>
+                                    <li>Réduisez le taux d'apprentissage</li>
+                                    <li>Assurez-vous d'appliquer la normalisation</li>
+                                    <li>Vérifiez la présence de valeurs aberrantes dans les données</li>
+                                    <li>Essayez une méthode de normalisation différente</li>
                                 </ul>
                             </div>
                         </div>

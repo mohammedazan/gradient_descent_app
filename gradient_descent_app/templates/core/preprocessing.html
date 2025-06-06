@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}تهيئة البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+{% block title %}Préparation des données - Application Gradient Descent Graphique{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-10">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">تهيئة ومعالجة البيانات</h2>
+                <h2 class="mb-0">Préparation et traitement des données</h2>
             </div>
             <div class="card-body">
                 <div class="alert alert-info" role="alert">
-                    <h5 class="alert-heading">خطوة مهمة!</h5>
+                    <h5 class="alert-heading">Étape importante !</h5>
                     <p class="mb-0">
-                        تهيئة البيانات خطوة أساسية لضمان الحصول على أفضل النتائج من خوارزمية Gradient Descent.
-                        اختر الخيارات المناسبة لبياناتك.
+                        La préparation des données est une étape essentielle pour garantir les meilleurs résultats de l'algorithme Gradient Descent.
+                        Choisissez les options appropriées pour vos données.
                     </p>
                 </div>
 
@@ -26,7 +26,7 @@
                         <div class="col-md-6">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="mb-0">معالجة القيم المفقودة</h5>
+                                    <h5 class="mb-0">Traitement des valeurs manquantes</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
@@ -56,15 +56,15 @@
                                             </div>
                                         {% endif %}
                                         <div class="form-text">
-                                            أدخل القيمة التي تريد استخدامها لملء القيم المفقودة
+                                            Entrez la valeur que vous souhaitez utiliser pour remplir les valeurs manquantes
                                         </div>
                                     </div>
 
                                     <div class="alert alert-light" role="alert">
                                         <small>
-                                            <strong>حذف الصفوف:</strong> إزالة الصفوف التي تحتوي على قيم مفقودة<br>
-                                            <strong>ملء بالمتوسط:</strong> استبدال القيم المفقودة بمتوسط العمود<br>
-                                            <strong>ملء بقيمة ثابتة:</strong> استبدال القيم المفقودة بقيمة محددة
+                                            <strong>Supprimer les lignes :</strong> Supprime les lignes contenant des valeurs manquantes<br>
+                                            <strong>Remplir avec la moyenne :</strong> Remplace les valeurs manquantes par la moyenne de la colonne<br>
+                                            <strong>Remplir avec une valeur constante :</strong> Remplace les valeurs manquantes par une valeur spécifiée
                                         </small>
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                         <div class="col-md-6">
                             <div class="card mb-4">
                                 <div class="card-header">
-                                    <h5 class="mb-0">طريقة التطبيع</h5>
+                                    <h5 class="mb-0">Méthode de normalisation</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-3">
@@ -94,10 +94,10 @@
 
                                     <div class="alert alert-light" role="alert">
                                         <small>
-                                            <strong>التطبيع المعياري:</strong> (x - mean) / std<br>
-                                            يجعل البيانات بمتوسط 0 وانحراف معياري 1<br><br>
-                                            <strong>تطبيع Min-Max:</strong> (x - min) / (max - min)<br>
-                                            يجعل البيانات في المدى [0, 1]
+                                            <strong>Normalisation standard :</strong> (x - moyenne) / écart-type<br>
+                                            Rend les données avec une moyenne de 0 et un écart-type de 1<br><br>
+                                            <strong>Normalisation Min-Max :</strong> (x - min) / (max - min)<br>
+                                            Rend les données dans la plage [0, 1]
                                         </small>
                                     </div>
                                 </div>
@@ -108,7 +108,7 @@
                     <!-- Categorical Encoding -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">تشفير المتغيرات الفئوية</h5>
+                            <h5 class="mb-0">Encodage des variables catégorielles</h5>
                         </div>
                         <div class="card-body">
                             <div class="form-check">
@@ -125,7 +125,7 @@
                                 </div>
                             {% endif %}
                             <div class="form-text mt-2">
-                                يحول المتغيرات النصية (مثل: ذكر/أنثى) إلى متغيرات رقمية باستخدام One-Hot Encoding
+                                Convertit les variables textuelles (ex : homme/femme) en variables numériques en utilisant l'encodage One-Hot
                             </div>
                         </div>
                     </div>
@@ -134,11 +134,11 @@
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <button type="submit" class="btn btn-primary btn-lg me-md-2">
                             <i class="fas fa-cogs me-2"></i>
-                            تنفيذ التهيئة
+                            Exécuter la préparation
                         </button>
                         <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-arrow-right me-2"></i>
-                            العودة للإحصائيات
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Retour aux statistiques
                         </a>
                     </div>
                 </form>
@@ -146,24 +146,24 @@
                 <!-- Tips Section -->
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="mb-0">نصائح للحصول على أفضل النتائج</h5>
+                        <h5 class="mb-0">Conseils pour obtenir les meilleurs résultats</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6 class="text-primary">معالجة القيم المفقودة:</h6>
+                                <h6 class="text-primary">Traitement des valeurs manquantes :</h6>
                                 <ul class="list-unstyled">
-                                    <li><i class="fas fa-check text-success me-2"></i>إذا كانت القيم المفقودة قليلة (&lt;5%)، استخدم حذف الصفوف</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>للبيانات الرقمية، الملء بالمتوسط خيار جيد</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>استخدم القيمة الثابتة إذا كنت تعرف قيمة منطقية للملء</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Si les valeurs manquantes sont peu nombreuses (&lt;5%), utilisez la suppression des lignes</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Pour les données numériques, le remplissage par la moyenne est une bonne option</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Utilisez une valeur constante si vous connaissez une valeur logique pour le remplissage</li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-primary">التطبيع:</h6>
+                                <h6 class="text-primary">Normalisation :</h6>
                                 <ul class="list-unstyled">
-                                    <li><i class="fas fa-check text-success me-2"></i>التطبيع المعياري مناسب للبيانات ذات التوزيع الطبيعي</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>Min-Max مناسب عندما تريد الحفاظ على العلاقات النسبية</li>
-                                    <li><i class="fas fa-check text-success me-2"></i>التطبيع مهم جداً لضمان تقارب سريع للخوارزمية</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>La normalisation standard convient aux données à distribution normale</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Min-Max convient quand vous voulez préserver les relations proportionnelles</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>La normalisation est très importante pour assurer une convergence rapide de l'algorithme</li>
                                 </ul>
                             </div>
                         </div>

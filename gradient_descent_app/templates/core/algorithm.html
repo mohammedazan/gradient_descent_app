@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}تنفيذ الخوارزمية - تطبيق Gradient Descent الرسومي{% endblock %}
+{% block title %}Exécution de l'algorithme - Application Gradient Descent Graphique{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">تنفيذ خوارزمية Gradient Descent</h2>
+                <h2 class="mb-0">Exécution de l'algorithme Gradient Descent</h2>
             </div>
             <div class="card-body">
                 <div class="alert alert-success" role="alert">
-                    <h5 class="alert-heading">البيانات جاهزة!</h5>
+                    <h5 class="alert-heading">Données prêtes !</h5>
                     <p class="mb-0">
-                        تم تهيئة البيانات بنجاح. الآن يمكنك اختيار نوع النموذج ومعاملات الخوارزمية.
+                        Les données ont été préparées avec succès. Vous pouvez maintenant choisir le type de modèle et les paramètres de l'algorithme.
                     </p>
                 </div>
 
@@ -23,7 +23,7 @@
                     <!-- Model Type Selection -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">اختيار نوع النموذج</h5>
+                            <h5 class="mb-0">Sélection du type de modèle</h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
@@ -43,19 +43,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="alert alert-info" role="alert">
-                                        <h6 class="alert-heading">الانحدار الخطي</h6>
+                                        <h6 class="alert-heading">Régression linéaire</h6>
                                         <small>
-                                            مناسب للتنبؤ بالقيم المستمرة<br>
-                                            مثال: التنبؤ بأسعار المنازل، درجات الحرارة
+                                            Convient pour prédire des valeurs continues<br>
+                                            Exemple : prédiction des prix immobiliers, températures
                                         </small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="alert alert-warning" role="alert">
-                                        <h6 class="alert-heading">الانحدار اللوجستي</h6>
+                                        <h6 class="alert-heading">Régression logistique</h6>
                                         <small>
-                                            مناسب للتصنيف الثنائي<br>
-                                            مثال: تصنيف البريد الإلكتروني (spam/not spam)
+                                            Convient pour la classification binaire<br>
+                                            Exemple : classification d'emails (spam/non spam)
                                         </small>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                     <!-- Algorithm Parameters -->
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">معاملات الخوارزمية</h5>
+                            <h5 class="mb-0">Paramètres de l'algorithme</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -84,7 +84,7 @@
                                             </div>
                                         {% endif %}
                                         <div class="form-text">
-                                            يتحكم في سرعة التعلم. القيم الصغيرة أبطأ لكن أكثر استقراراً
+                                            Contrôle la vitesse d'apprentissage. Les petites valeurs sont plus lentes mais plus stables
                                         </div>
                                     </div>
                                 </div>
@@ -102,29 +102,29 @@
                                             </div>
                                         {% endif %}
                                         <div class="form-text">
-                                            عدد مرات تحديث المعاملات. المزيد يعني تدريب أطول
+                                            Nombre de fois que les paramètres sont mis à jour. Plus signifie un entraînement plus long
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="alert alert-light" role="alert">
-                                <h6 class="text-primary">نصائح لاختيار المعاملات:</h6>
+                                <h6 class="text-primary">Conseils pour choisir les paramètres :</h6>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <strong>معدل التعلم (α):</strong>
+                                        <strong>Taux d'apprentissage (α) :</strong>
                                         <ul class="mb-0 mt-2">
-                                            <li>ابدأ بـ 0.01 للبيانات العادية</li>
-                                            <li>استخدم 0.001 للبيانات الكبيرة</li>
-                                            <li>استخدم 0.1 للبيانات الصغيرة</li>
+                                            <li>Commencez par 0.01 pour des données normales</li>
+                                            <li>Utilisez 0.001 pour de grandes données</li>
+                                            <li>Utilisez 0.1 pour de petites données</li>
                                         </ul>
                                     </div>
                                     <div class="col-md-6">
-                                        <strong>عدد التكرارات:</strong>
+                                        <strong>Nombre d'itérations :</strong>
                                         <ul class="mb-0 mt-2">
-                                            <li>1000 تكرار عادة كافي</li>
-                                            <li>زد العدد إذا لم تتقارب الخوارزمية</li>
-                                            <li>قلل العدد للاختبار السريع</li>
+                                            <li>1000 itérations sont généralement suffisantes</li>
+                                            <li>Augmentez si l'algorithme ne converge pas</li>
+                                            <li>Réduisez pour un test rapide</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -136,11 +136,11 @@
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <button type="submit" class="btn btn-primary btn-lg me-md-2" id="run-algorithm-btn">
                             <i class="fas fa-play me-2"></i>
-                            تنفيذ الخوارزمية
+                            Exécuter l'algorithme
                         </button>
                         <a href="{% url 'core:preprocessing' %}" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-arrow-right me-2"></i>
-                            العودة للتهيئة
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Retour à la préparation
                         </a>
                     </div>
                 </form>
@@ -148,38 +148,38 @@
                 <!-- Algorithm Explanation -->
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5 class="mb-0">كيف تعمل خوارزمية Gradient Descent؟</h5>
+                        <h5 class="mb-0">Comment fonctionne l'algorithme Gradient Descent ?</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <p>
-                                    خوارزمية Gradient Descent هي طريقة تحسين تستخدم لإيجاد أفضل قيم للمعاملات (θ) 
-                                    التي تقلل من دالة التكلفة (Cost Function).
+                                    L'algorithme Gradient Descent est une méthode d'optimisation utilisée pour trouver les meilleures valeurs des paramètres (θ)
+                                    qui minimisent la fonction de coût (Cost Function).
                                 </p>
                                 
-                                <h6 class="text-primary">خطوات الخوارزمية:</h6>
+                                <h6 class="text-primary">Étapes de l'algorithme :</h6>
                                 <ol>
-                                    <li><strong>التهيئة:</strong> ابدأ بقيم عشوائية للمعاملات</li>
-                                    <li><strong>حساب التنبؤات:</strong> استخدم المعاملات الحالية للتنبؤ</li>
-                                    <li><strong>حساب التكلفة:</strong> قارن التنبؤات بالقيم الحقيقية</li>
-                                    <li><strong>حساب التدرج:</strong> احسب اتجاه التحسين</li>
-                                    <li><strong>تحديث المعاملات:</strong> حرك المعاملات في اتجاه التحسين</li>
-                                    <li><strong>التكرار:</strong> كرر الخطوات حتى التقارب</li>
+                                    <li><strong>Initialisation :</strong> Commencer avec des valeurs aléatoires pour les paramètres</li>
+                                    <li><strong>Calcul des prédictions :</strong> Utiliser les paramètres actuels pour prédire</li>
+                                    <li><strong>Calcul du coût :</strong> Comparer les prédictions aux valeurs réelles</li>
+                                    <li><strong>Calcul du gradient :</strong> Calculer la direction d'amélioration</li>
+                                    <li><strong>Mise à jour des paramètres :</strong> Déplacer les paramètres dans la direction d'amélioration</li>
+                                    <li><strong>Itération :</strong> Répéter les étapes jusqu'à convergence</li>
                                 </ol>
                             </div>
                             <div class="col-md-4">
                                 <div class="card bg-light">
                                     <div class="card-body text-center">
-                                        <h6 class="card-title">معادلة التحديث</h6>
+                                        <h6 class="card-title">Équation de mise à jour</h6>
                                         <div class="equation">
                                             θ = θ - α × ∇J(θ)
                                         </div>
                                         <small class="text-muted">
-                                            حيث:<br>
-                                            θ = المعاملات<br>
-                                            α = معدل التعلم<br>
-                                            ∇J(θ) = تدرج دالة التكلفة
+                                            Où :<br>
+                                            θ = paramètres<br>
+                                            α = taux d'apprentissage<br>
+                                            ∇J(θ) = gradient de la fonction de coût
                                         </small>
                                     </div>
                                 </div>
@@ -191,9 +191,9 @@
                 <!-- Loading Animation (Hidden by default) -->
                 <div id="loading-animation" class="text-center mt-4" style="display: none;">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">جاري التنفيذ...</span>
+                        <span class="visually-hidden">Exécution en cours...</span>
                     </div>
-                    <p class="mt-2">جاري تنفيذ الخوارزمية، يرجى الانتظار...</p>
+                    <p class="mt-2">Exécution de l'algorithme en cours, veuillez patienter...</p>
                 </div>
             </div>
         </div>
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     form.addEventListener('submit', function() {
         runButton.disabled = true;
-        runButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري التنفيذ...';
+        runButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Exécution en cours...';
         loadingAnimation.style.display = 'block';
     });
 });

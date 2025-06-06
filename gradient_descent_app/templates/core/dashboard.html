@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
 
-{% block title %}إحصائيات البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+{% block title %}Statistiques des données - Application Gradient Descent Graphique{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">إحصائيات البيانات</h2>
-                <p class="mb-0 text-light">الملف: {{ file_name }}</p>
+                <h2 class="mb-0">Statistiques des données</h2>
+                <p class="mb-0 text-light">Fichier : {{ file_name }}</p>
             </div>
             <div class="card-body">
                 <!-- Dataset Overview -->
@@ -18,7 +18,7 @@
                         <div class="card bg-primary text-white">
                             <div class="card-body text-center">
                                 <h4>{{ dataset_info.shape.0 }}</h4>
-                                <p class="mb-0">عدد الصفوف</p>
+                                <p class="mb-0">Nombre de lignes</p>
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                         <div class="card bg-success text-white">
                             <div class="card-body text-center">
                                 <h4>{{ dataset_info.shape.1 }}</h4>
-                                <p class="mb-0">عدد الأعمدة</p>
+                                <p class="mb-0">Nombre de colonnes</p>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         <div class="card bg-warning text-white">
                             <div class="card-body text-center">
                                 <h4>{{ dataset_info.total_missing }}</h4>
-                                <p class="mb-0">القيم المفقودة</p>
+                                <p class="mb-0">Valeurs manquantes</p>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="card bg-info text-white">
                             <div class="card-body text-center">
                                 <h4>{{ stats|length }}</h4>
-                                <p class="mb-0">الأعمدة الرقمية</p>
+                                <p class="mb-0">Colonnes numériques</p>
                             </div>
                         </div>
                     </div>
@@ -51,16 +51,16 @@
                 <!-- Column Information -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h4 class="mb-0">معلومات الأعمدة</h4>
+                        <h4 class="mb-0">Informations sur les colonnes</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>اسم العمود</th>
-                                        <th>نوع البيانات</th>
-                                        <th>الوصف</th>
+                                        <th>Nom de la colonne</th>
+                                        <th>Type de données</th>
+                                        <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,9 +74,9 @@
                                             </td>
                                             <td>
                                                 {% if forloop.last %}
-                                                    <span class="badge bg-primary">متغير تابع (Target)</span>
+                                                    <span class="badge bg-primary">Variable cible (Target)</span>
                                                 {% else %}
-                                                    <span class="badge bg-success">متغير مستقل (Feature)</span>
+                                                    <span class="badge bg-success">Variable indépendante (Feature)</span>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -91,20 +91,20 @@
                 {% if stats %}
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h4 class="mb-0">الإحصائيات الوصفية للأعمدة الرقمية</h4>
+                        <h4 class="mb-0">Statistiques descriptives des colonnes numériques</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>اسم العمود</th>
-                                        <th>المتوسط</th>
-                                        <th>الوسيط</th>
-                                        <th>الانحراف المعياري</th>
-                                        <th>أقل قيمة</th>
-                                        <th>أكبر قيمة</th>
-                                        <th>القيم المفقودة</th>
+                                        <th>Nom de la colonne</th>
+                                        <th>Moyenne</th>
+                                        <th>Médiane</th>
+                                        <th>Écart-type</th>
+                                        <th>Valeur minimale</th>
+                                        <th>Valeur maximale</th>
+                                        <th>Valeurs manquantes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -132,8 +132,8 @@
                 </div>
                 {% else %}
                 <div class="alert alert-warning" role="alert">
-                    <h5 class="alert-heading">تنبيه!</h5>
-                    لا توجد أعمدة رقمية في البيانات. تأكد من أن ملف البيانات يحتوي على قيم رقمية.
+                    <h5 class="alert-heading">Attention !</h5>
+                    Aucune colonne numérique trouvée dans les données. Assurez-vous que le fichier de données contient des valeurs numériques.
                 </div>
                 {% endif %}
 
@@ -141,45 +141,45 @@
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
                     <a href="{% url 'core:preprocessing' %}" class="btn btn-primary btn-lg me-md-2">
                         <i class="fas fa-cogs me-2"></i>
-                        المتابعة إلى التهيئة
+                        Continuer vers la préparation
                     </a>
                     <a href="{% url 'core:upload' %}" class="btn btn-outline-secondary btn-lg">
                         <i class="fas fa-upload me-2"></i>
-                        رفع ملف آخر
+                        Importer un autre fichier
                     </a>
                 </div>
 
                 <!-- Data Quality Assessment -->
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h4 class="mb-0">تقييم جودة البيانات</h4>
+                        <h4 class="mb-0">Évaluation de la qualité des données</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6 class="text-primary">حالة البيانات:</h6>
+                                <h6 class="text-primary">État des données :</h6>
                                 {% if dataset_info.total_missing == 0 %}
                                     <div class="alert alert-success" role="alert">
                                         <i class="fas fa-check-circle me-2"></i>
-                                        البيانات كاملة - لا توجد قيم مفقودة
+                                        Données complètes - aucune valeur manquante
                                     </div>
                                 {% else %}
                                     <div class="alert alert-warning" role="alert">
                                         <i class="fas fa-exclamation-triangle me-2"></i>
-                                        توجد {{ dataset_info.total_missing }} قيمة مفقودة تحتاج للمعالجة
+                                        Il y a {{ dataset_info.total_missing }} valeur(s) manquante(s) nécessitant un traitement
                                     </div>
                                 {% endif %}
                             </div>
                             <div class="col-md-6">
-                                <h6 class="text-primary">توصيات:</h6>
+                                <h6 class="text-primary">Recommandations :</h6>
                                 <ul class="list-unstyled">
                                     {% if dataset_info.total_missing > 0 %}
-                                        <li><i class="fas fa-arrow-left text-warning me-2"></i>قم بمعالجة القيم المفقودة في خطوة التهيئة</li>
+                                        <li><i class="fas fa-arrow-right text-warning me-2"></i>Traitez les valeurs manquantes dans l'étape de préparation</li>
                                     {% endif %}
                                     {% if stats|length > 0 %}
-                                        <li><i class="fas fa-arrow-left text-info me-2"></i>فكر في تطبيق التطبيع على البيانات</li>
+                                        <li><i class="fas fa-arrow-right text-info me-2"></i>Considérez l'application de la normalisation aux données</li>
                                     {% endif %}
-                                    <li><i class="fas fa-arrow-left text-success me-2"></i>تأكد من أن العمود الأخير هو المتغير التابع</li>
+                                    <li><i class="fas fa-arrow-right text-success me-2"></i>Assurez-vous que la dernière colonne est la variable cible</li>
                                 </ul>
                             </div>
                         </div>

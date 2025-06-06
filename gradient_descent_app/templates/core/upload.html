@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}رفع البيانات - تطبيق Gradient Descent الرسومي{% endblock %}
+{% block title %}Import de données - Application Gradient Descent Graphique{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header text-center">
-                <h2 class="mb-0">رفع ملف البيانات</h2>
+                <h2 class="mb-0">Importer un fichier de données</h2>
             </div>
             <div class="card-body">
                 <div class="alert alert-info" role="alert">
-                    <h5 class="alert-heading">متطلبات الملف:</h5>
+                    <h5 class="alert-heading">Exigences du fichier :</h5>
                     <ul class="mb-0">
-                        <li>يجب أن يكون الملف بصيغة CSV</li>
-                        <li>حجم الملف أقل من 5 ميجابايت</li>
-                        <li>العمود الأخير يُعتبر المتغير التابع (Target Variable)</li>
-                        <li>باقي الأعمدة تُعتبر المتغيرات المستقلة (Features)</li>
+                        <li>Le fichier doit être au format CSV</li>
+                        <li>Taille du fichier inférieure à 5 mégaoctets</li>
+                        <li>La dernière colonne est considérée comme la variable cible (Target Variable)</li>
+                        <li>Les autres colonnes sont considérées comme les variables indépendantes (Features)</li>
                     </ul>
                 </div>
 
@@ -36,25 +36,25 @@
                             </div>
                         {% endif %}
                         <div class="form-text">
-                            اختر ملف CSV يحتوي على البيانات التي تريد تحليلها
+                            Choisissez un fichier CSV contenant les données que vous souhaitez analyser
                         </div>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <button type="submit" class="btn btn-primary btn-lg me-md-2">
                             <i class="fas fa-upload me-2"></i>
-                            رفع الملف
+                            Importer le fichier
                         </button>
                         <a href="{% url 'core:home' %}" class="btn btn-outline-secondary btn-lg">
-                            <i class="fas fa-arrow-right me-2"></i>
-                            العودة للرئيسية
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Retour à l'accueil
                         </a>
                     </div>
                 </form>
 
                 <!-- Sample Data Section -->
                 <div class="mt-5">
-                    <h4 class="text-secondary mb-3">مثال على تنسيق البيانات:</h4>
+                    <h4 class="text-secondary mb-3">Exemple de format de données :</h4>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -89,8 +89,8 @@
                     </div>
                     <p class="text-muted">
                         <small>
-                            في هذا المثال، Feature_1 و Feature_2 و Feature_3 هي المتغيرات المستقلة، 
-                            و Target هو المتغير التابع الذي نريد التنبؤ به.
+                            Dans cet exemple, Feature_1, Feature_2 et Feature_3 sont les variables indépendantes,
+                            et Target est la variable cible que nous voulons prédire.
                         </small>
                     </p>
                 </div>
@@ -99,12 +99,12 @@
                 <div class="mt-4">
                     <div class="card bg-light">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">نصائح مهمة:</h5>
+                            <h5 class="card-title text-primary">Conseils importants :</h5>
                             <ul class="mb-0">
-                                <li>تأكد من أن البيانات نظيفة ومنظمة</li>
-                                <li>للانحدار الخطي: المتغير التابع يجب أن يكون رقمي مستمر</li>
-                                <li>للانحدار اللوجستي: المتغير التابع يجب أن يكون ثنائي (0 أو 1)</li>
-                                <li>تجنب وجود أعمدة فارغة أو بيانات غير صحيحة</li>
+                                <li>Assurez-vous que les données sont propres et organisées</li>
+                                <li>Pour la régression linéaire : la variable cible doit être numérique continue</li>
+                                <li>Pour la régression logistique : la variable cible doit être binaire (0 ou 1)</li>
+                                <li>Évitez les colonnes vides ou les données incorrectes</li>
                             </ul>
                         </div>
                     </div>

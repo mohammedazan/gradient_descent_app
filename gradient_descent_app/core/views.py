@@ -38,12 +38,45 @@ def upload_data(request):
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
             
-            # Store file path in session
-            request.session['csv_file_path'] = file_path
-            request.session['csv_file_name'] = uploaded_file.name
-            
-            messages.success(request, 'Fichier téléchargé avec succès!')
-            return redirect('core:dashboard')
+            # Test reading the CSV file immediately after upload
+            try:
+                print(f"[DEBUG] Testing CSV file readability: {file_path}")
+                test_df = read_dataset(file_path)
+                print(f"[DEBUG] CSV file successfully validated. Shape: {test_df.shape}")
+                
+                # Store file path in session
+                request.session['csv_file_path'] = file_path
+                request.session['csv_file_name'] = uploaded_file.name
+                
+                messages.success(request, f'Fichier téléchargé avec succès! Trouvé {test_df.shape[0]} lignes et {test_df.shape[1]} colonnes de données valides.')
+                return redirect('core:dashboard')
+                
+            except Exception as e:
+                # Remove the uploaded file if it can't be read
+                try:
+                    os.remove(file_path)
+                except:
+                    pass
+                
+                error_msg = str(e)
+                if "No valid numeric data found" in error_msg:
+                    messages.error(request,
+                        'Erreur : Le fichier CSV ne contient pas de données numériques valides. '
+                        'Veuillez vérifier que votre fichier contient des colonnes avec des valeurs numériques. '
+                        'Consultez la console du serveur pour plus de détails de débogage.')
+                elif "Could not read CSV file" in error_msg:
+                    messages.error(request,
+                        'Erreur : Impossible de lire le fichier CSV. '
+                        'Veuillez vérifier l\'encodage du fichier (UTF-8 recommandé) et le délimiteur utilisé (virgule ou point-virgule). '
+                        'Consultez la console du serveur pour plus de détails de débogage.')
+                elif "Insufficient data" in error_msg:
+                    messages.error(request,
+                        'Erreur : Données insuffisantes. '
+                        'Le fichier doit contenir au moins 5 lignes de données numériques valides pour l\'analyse.')
+                else:
+                    messages.error(request, f'Erreur de lecture du fichier CSV : {error_msg}')
+                
+                return render(request, 'core/upload.html', {'form': form})
     else:
         form = UploadFileForm()
     
@@ -80,7 +113,13 @@ def dashboard(request):
         return render(request, 'core/dashboard.html', context)
         
     except Exception as e:
-        messages.error(request, f'Erreur de lecture du fichier : {str(e)}')
+        error_msg = str(e)
+        if "No valid numeric data found" in error_msg:
+            messages.error(request,
+                'Erreur : Le fichier CSV ne contient pas de données numériques valides après conversion. '
+                'Veuillez vérifier le format de vos données.')
+        else:
+            messages.error(request, f'Erreur de lecture du fichier : {error_msg}')
         return redirect('core:upload')
 
 def preprocessing(request):
@@ -122,7 +161,13 @@ def preprocessing(request):
                 return redirect('core:algorithm')
                 
             except Exception as e:
-                messages.error(request, f'Erreur de traitement des données : {str(e)}')
+                error_msg = str(e)
+                if "No valid numeric data found" in error_msg:
+                    messages.error(request,
+                        'Erreur de traitement : Aucune donnée numérique valide trouvée après le prétraitement. '
+                        'Veuillez vérifier vos paramètres de préparation.')
+                else:
+                    messages.error(request, f'Erreur de traitement des données : {error_msg}')
     else:
         form = PreprocessingForm()
     
@@ -203,7 +248,18 @@ def algorithm(request):
                 return redirect('core:results')
                 
             except Exception as e:
-                messages.error(request, f'Erreur d\'exécution de l\'algorithme : {str(e)}')
+                error_msg = str(e)
+                if "No valid numeric data found" in error_msg:
+                    messages.error(request,
+                        'Erreur d\'algorithme : Aucune donnée numérique valide trouvée. '
+                        'Veuillez revenir à l\'étape de préparation des données.')
+                elif "can't multiply sequence by non-int" in error_msg or "unsupported operand type" in error_msg:
+                    messages.error(request,
+                        'Erreur d\'algorithme : Problème de type de données. '
+                        'Les données contiennent encore des valeurs non-numériques. '
+                        'Veuillez revenir à l\'étape de préparation des données.')
+                else:
+                    messages.error(request, f'Erreur d\'exécution de l\'algorithme : {error_msg}')
     else:
         form = AlgorithmForm()
     

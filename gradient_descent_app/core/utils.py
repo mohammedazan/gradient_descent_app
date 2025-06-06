@@ -8,11 +8,176 @@ import base64
 import os
 
 def read_dataset(file_path):
-    """Read CSV file and return DataFrame"""
+    """Read CSV file and return DataFrame with intelligent handling of mixed data types"""
     try:
-        df = pd.read_csv(file_path)
+        print(f"[DEBUG] Reading CSV file: {file_path}")
+        
+        # Try different encoding and delimiter combinations
+        encodings = ['utf-8-sig', 'utf-8', 'latin-1', 'cp1252']
+        separators = [None, ',', ';', '\t']  # None means auto-detect
+        
+        df = None
+        successful_config = None
+        
+        for encoding in encodings:
+            for sep in separators:
+                try:
+                    if sep is None:
+                        # Auto-detect separator using python engine
+                        df = pd.read_csv(file_path, encoding=encoding, sep=None, engine='python')
+                    else:
+                        df = pd.read_csv(file_path, encoding=encoding, sep=sep)
+                    
+                    # Basic validation of the read result
+                    if df is not None and not df.empty and len(df.columns) >= 2:
+                        successful_config = f"encoding={encoding}, sep={sep if sep else 'auto-detect'}"
+                        print(f"[DEBUG] Successfully read with {successful_config}")
+                        break
+                except Exception as read_error:
+                    print(f"[DEBUG] Failed with encoding={encoding}, sep={sep}: {read_error}")
+                    continue
+            
+            if df is not None and not df.empty and len(df.columns) >= 2:
+                break
+        
+        if df is None or df.empty:
+            raise Exception("Could not read CSV file with any encoding/delimiter combination")
+        
+        # Clean column names (remove whitespace and handle unnamed columns)
+        df.rename(columns=lambda x: x.strip(), inplace=True)
+        
+        # Remove completely empty columns or columns with only NaN
+        df = df.dropna(axis=1, how='all')
+        
+        # Remove unnamed/empty columns that might be artifacts
+        df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+        
+        print(f"[DEBUG] Cleaned column names: {list(df.columns)}")
+        
+        # Validate minimum columns after cleaning
+        if len(df.columns) < 2:
+            raise Exception(f"CSV file must have at least 2 valid columns (features + target), found {len(df.columns)} after cleaning")
+        
+        # Log original data types and sample
+        print(f"[DEBUG] Original data types:\n{df.dtypes}")
+        print(f"[DEBUG] Original data sample:\n{df.head()}")
+        print(f"[DEBUG] Original shape: {df.shape}")
+        
+        # Identify which columns can be converted to numeric
+        feature_cols = df.columns[:-1]
+        target_col = df.columns[-1]
+        
+        print(f"[DEBUG] Analyzing {len(feature_cols)} feature columns for numeric conversion...")
+        
+        # Smart conversion: only convert columns that have mostly numeric data
+        numeric_feature_cols = []
+        categorical_feature_cols = []
+        
+        for col in feature_cols:
+            # Try converting to see how many values are convertible
+            test_conversion = pd.to_numeric(df[col], errors='coerce')
+            valid_numeric_ratio = test_conversion.notna().sum() / len(df)
+            
+            print(f"[DEBUG] Column '{col}': {test_conversion.notna().sum()}/{len(df)} values convertible to numeric ({valid_numeric_ratio:.2%})")
+            
+            if valid_numeric_ratio >= 0.8:  # If 80% or more can be converted, treat as numeric
+                numeric_feature_cols.append(col)
+                df[col] = test_conversion
+            else:
+                categorical_feature_cols.append(col)
+                print(f"[DEBUG] Column '{col}' treated as categorical (too few numeric values)")
+        
+        # Convert target column to numeric (required)
+        print(f"[DEBUG] Converting target column '{target_col}' to numeric...")
+        original_target_non_null = df[target_col].notna().sum()
+        df[target_col] = pd.to_numeric(df[target_col], errors='coerce')
+        converted_target_non_null = df[target_col].notna().sum()
+        print(f"[DEBUG] Target column '{target_col}': {original_target_non_null} -> {converted_target_non_null} valid values")
+        
+        # Remove rows with missing target values first
+        initial_rows = len(df)
+        df = df.dropna(subset=[target_col])
+        dropped_target_rows = initial_rows - len(df)
+        print(f"[DEBUG] Dropped {dropped_target_rows} rows with missing target values. Remaining: {len(df)}")
+        
+        if len(df) == 0:
+            raise Exception(f"Target column '{target_col}' contains no valid numeric values after removing missing data. Please ensure the last column contains numeric target values.")
+        
+        # Handle categorical columns using one-hot encoding
+        if categorical_feature_cols:
+            print(f"[DEBUG] Applying one-hot encoding to categorical columns: {categorical_feature_cols}")
+            
+            # Fill missing values in categorical columns before one-hot encoding
+            for col in categorical_feature_cols:
+                if df[col].isnull().any():
+                    missing_count = df[col].isnull().sum()
+                    mode_val = df[col].mode()
+                    if len(mode_val) > 0:
+                        fill_val = mode_val[0]
+                    else:
+                        fill_val = 'Unknown'
+                    df[col].fillna(fill_val, inplace=True)
+                    print(f"[DEBUG] Filled {missing_count} missing values in categorical '{col}' with: {fill_val}")
+            
+            # Create dummy variables for categorical columns
+            categorical_dummies = pd.get_dummies(df[categorical_feature_cols], prefix=categorical_feature_cols, drop_first=True)
+            
+            # Remove original categorical columns and add dummy columns
+            df = df.drop(columns=categorical_feature_cols)
+            df = pd.concat([df.iloc[:, :-1], categorical_dummies, df.iloc[:, -1:]], axis=1)
+            
+            print(f"[DEBUG] After one-hot encoding, new columns: {list(df.columns)}")
+        
+        # Log data types after conversion
+        print(f"[DEBUG] Data types after processing:\n{df.dtypes}")
+        
+        # Check if we have any numeric feature columns
+        feature_columns = df.columns[:-1]  # All except target
+        numeric_features = df[feature_columns].select_dtypes(include=['float64', 'int64'])
+        
+        if numeric_features.empty:
+            raise Exception("No numeric feature columns found after processing. Please ensure your CSV contains numeric data for features.")
+        
+        print(f"[DEBUG] Found {len(numeric_features.columns)} numeric feature columns: {list(numeric_features.columns)}")
+        
+        # Only drop rows where the target is NaN (be more lenient with features)
+        rows_before = len(df)
+        df = df.dropna(subset=[target_col])  # Only require target to be non-null
+        rows_after = len(df)
+        print(f"[DEBUG] Dropped {rows_before - rows_after} rows with missing target values. Remaining: {rows_after}")
+        
+        # For remaining NaN values in features, fill with median/mode
+        for col in df.columns[:-1]:  # All feature columns
+            if df[col].dtype in ['float64', 'int64']:
+                # Fill numeric columns with median
+                if df[col].isnull().any():
+                    median_val = df[col].median()
+                    df[col] = df[col].fillna(median_val)
+                    print(f"[DEBUG] Filled {col} NaN values with median: {median_val}")
+        
+        if df.empty:
+            raise Exception("No valid rows remaining after processing. Please check your CSV file format.")
+        
+        # Final validation
+        if len(df) < 5:
+            raise Exception(f"Insufficient data: only {len(df)} valid rows found. Need at least 5 rows for meaningful analysis.")
+        
+        # Ensure we have at least one numeric feature
+        final_numeric_features = df.iloc[:, :-1].select_dtypes(include=['float64', 'int64'])
+        if final_numeric_features.empty:
+            raise Exception("No numeric features available for analysis after processing.")
+        
+        # Log final sample
+        print(f"[DEBUG] Final data sample:\n{df.head()}")
+        print(f"[DEBUG] Final shape: {df.shape}")
+        print(f"[DEBUG] Final feature columns: {list(df.columns[:-1])}")
+        print(f"[DEBUG] Target column: {df.columns[-1]}")
+        print(f"[DEBUG] Successfully processed CSV file with {successful_config}")
+        
         return df
+        
     except Exception as e:
+        print(f"[ERROR] Failed to read CSV file: {str(e)}")
         raise Exception(f"Error reading CSV file: {str(e)}")
 
 def get_descriptive_stats(df):

@@ -1,183 +1,183 @@
-# تطبيق Gradient Descent الرسومي
+# Application Gradient Descent Graphique
 
-تطبيق Django شامل لتنفيذ خوارزمية Gradient Descent للانحدار الخطي والانحدار اللوجستي مع واجهة مستخدم باللغة العربية.
+Application Django complète pour l'implémentation de l'algorithme Gradient Descent pour la régression linéaire et logistique avec une interface utilisateur en français.
 
-## الميزات
+## Fonctionnalités
 
-- **رفع البيانات**: رفع ملفات CSV وتحليلها
-- **الإحصائيات الوصفية**: عرض إحصائيات شاملة للبيانات
-- **معالجة البيانات**: تهيئة البيانات (القيم المفقودة، التطبيع، التشفير)
-- **خوارزمية Gradient Descent**: تنفيذ الانحدار الخطي واللوجستي
-- **النتائج المرئية**: عرض منحنى التعلم ونتائج الأداء
-- **واجهة عربية**: دعم كامل للغة العربية مع تخطيط RTL
+- **Import de données** : Import et analyse de fichiers CSV
+- **Statistiques descriptives** : Affichage de statistiques complètes des données
+- **Traitement des données** : Préparation des données (valeurs manquantes, normalisation, encodage)
+- **Algorithme Gradient Descent** : Implémentation de la régression linéaire et logistique
+- **Résultats visuels** : Affichage de la courbe d'apprentissage et des résultats de performance
+- **Interface française** : Support complet de la langue française avec mise en page LTR
 
-## متطلبات النظام
+## Exigences système
 
 - Python 3.8+
-- pip (مدير الحزم)
+- pip (gestionnaire de paquets)
 
-## التثبيت والإعداد
+## Installation et configuration
 
-### 1. إنشاء البيئة الافتراضية
+### 1. Créer l'environnement virtuel
 
 ```bash
 python -m venv venv
 ```
 
-### 2. تفعيل البيئة الافتراضية
+### 2. Activer l'environnement virtuel
 
-**Windows:**
+**Windows :**
 ```bash
 venv\Scripts\activate
 ```
 
-**macOS/Linux:**
+**macOS/Linux :**
 ```bash
 source venv/bin/activate
 ```
 
-### 3. تثبيت المتطلبات
+### 3. Installer les dépendances
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. إعداد قاعدة البيانات
+### 4. Configurer la base de données
 
 ```bash
 cd gradient_descent_app
 python manage.py migrate
 ```
 
-### 5. تشغيل الخادم
+### 5. Démarrer le serveur
 
 ```bash
 python manage.py runserver
 ```
 
-### 6. فتح التطبيق
+### 6. Ouvrir l'application
 
-افتح المتصفح وانتقل إلى: `http://localhost:8000/`
+Ouvrez le navigateur et allez à : `http://localhost:8000/`
 
-## استخدام التطبيق
+## Utilisation de l'application
 
-### 1. رفع البيانات
-- انتقل إلى صفحة "رفع البيانات"
-- اختر ملف CSV (أقل من 5 ميجابايت)
-- تأكد من أن العمود الأخير هو المتغير التابع
+### 1. Import des données
+- Allez à la page "Importer des données"
+- Choisissez un fichier CSV (moins de 5 mégaoctets)
+- Assurez-vous que la dernière colonne est la variable cible
 
-### 2. مراجعة الإحصائيات
-- عرض الإحصائيات الوصفية للبيانات
-- فحص القيم المفقودة وأنواع البيانات
+### 2. Examiner les statistiques
+- Affichage des statistiques descriptives des données
+- Vérification des valeurs manquantes et des types de données
 
-### 3. تهيئة البيانات
-- اختر طريقة معالجة القيم المفقودة
-- حدد نوع التطبيع المطلوب
-- فعل تشفير المتغيرات الفئوية إذا لزم الأمر
+### 3. Préparation des données
+- Choisissez la méthode de traitement des valeurs manquantes
+- Sélectionnez le type de normalisation requis
+- Activez l'encodage des variables catégorielles si nécessaire
 
-### 4. تنفيذ الخوارزمية
-- اختر نوع النموذج (خطي أو لوجستي)
-- حدد معدل التعلم وعدد التكرارات
-- شغل الخوارزمية
+### 4. Exécution de l'algorithme
+- Choisissez le type de modèle (linéaire ou logistique)
+- Définissez le taux d'apprentissage et le nombre d'itérations
+- Exécutez l'algorithme
 
-### 5. مراجعة النتائج
-- عرض المعاملات النهائية
-- مراجعة أداء النموذج
-- تحليل منحنى التعلم
+### 5. Examiner les résultats
+- Affichage des paramètres finaux
+- Examen des performances du modèle
+- Analyse de la courbe d'apprentissage
 
-## هيكل المشروع
+## Structure du projet
 
 ```
 gradient_descent_app/
 ├── gradient_descent_app/
-│   ├── settings.py          # إعدادات Django
-│   ├── urls.py             # توجيه URLs الرئيسي
-│   └── wsgi.py             # إعداد WSGI
-├── core/                   # التطبيق الرئيسي
-│   ├── views.py            # منطق العرض
-│   ├── forms.py            # نماذج Django
-│   ├── utils.py            # دوال المساعدة
-│   ├── urls.py             # توجيه URLs
-│   └── templatetags/       # مرشحات القوالب
-├── templates/              # قوالب HTML
-│   ├── base.html           # القالب الأساسي
-│   └── core/               # قوالب التطبيق
-├── static/                 # الملفات الثابتة
+│   ├── settings.py          # Paramètres Django
+│   ├── urls.py             # Routage URLs principal
+│   └── wsgi.py             # Configuration WSGI
+├── core/                   # Application principale
+│   ├── views.py            # Logique des vues
+│   ├── forms.py            # Formulaires Django
+│   ├── utils.py            # Fonctions utilitaires
+│   ├── urls.py             # Routage URLs
+│   └── templatetags/       # Filtres de templates
+├── templates/              # Templates HTML
+│   ├── base.html           # Template de base
+│   └── core/               # Templates de l'application
+├── static/                 # Fichiers statiques
 │   └── css/
-└── media/                  # ملفات المستخدم
-    ├── uploads/            # الملفات المرفوعة
-    └── processed/          # الملفات المعالجة
+└── media/                  # Fichiers utilisateur
+    ├── uploads/            # Fichiers importés
+    └── processed/          # Fichiers traités
 ```
 
-## الخوارزميات المدعومة
+## Algorithmes pris en charge
 
-### الانحدار الخطي
-- **الاستخدام**: التنبؤ بالقيم المستمرة
-- **دالة التكلفة**: Mean Squared Error (MSE)
-- **المعادلة**: `y = θ₀ + θ₁x₁ + θ₂x₂ + ... + θₙxₙ`
+### Régression linéaire
+- **Utilisation** : Prédiction de valeurs continues
+- **Fonction de coût** : Mean Squared Error (MSE)
+- **Équation** : `y = θ₀ + θ₁x₁ + θ₂x₂ + ... + θₙxₙ`
 
-### الانحدار اللوجستي
-- **الاستخدام**: التصنيف الثنائي
-- **دالة التكلفة**: Log-Likelihood
-- **المعادلة**: `P(y=1) = 1 / (1 + e^(-(θ₀ + θ₁x₁ + ... + θₙxₙ)))`
+### Régression logistique
+- **Utilisation** : Classification binaire
+- **Fonction de coût** : Log-Likelihood
+- **Équation** : `P(y=1) = 1 / (1 + e^(-(θ₀ + θ₁x₁ + ... + θₙxₙ)))`
 
-## معالجة البيانات
+## Traitement des données
 
-### القيم المفقودة
-- **حذف الصفوف**: إزالة الصفوف التي تحتوي على قيم مفقودة
-- **ملء بالمتوسط**: استبدال القيم المفقودة بمتوسط العمود
-- **ملء بقيمة ثابتة**: استبدال القيم المفقودة بقيمة محددة
+### Valeurs manquantes
+- **Suppression des lignes** : Supprime les lignes contenant des valeurs manquantes
+- **Remplissage par la moyenne** : Remplace les valeurs manquantes par la moyenne de la colonne
+- **Remplissage par une valeur constante** : Remplace les valeurs manquantes par une valeur spécifiée
 
-### التطبيع
-- **التطبيع المعياري**: `(x - mean) / std`
-- **تطبيع Min-Max**: `(x - min) / (max - min)`
+### Normalisation
+- **Normalisation standard** : `(x - moyenne) / écart-type`
+- **Normalisation Min-Max** : `(x - min) / (max - min)`
 
-### التشفير
-- **One-Hot Encoding**: تحويل المتغيرات الفئوية إلى متغيرات رقمية
+### Encodage
+- **One-Hot Encoding** : Conversion des variables catégorielles en variables numériques
 
-## نصائح للاستخدام
+## Conseils d'utilisation
 
-### اختيار معدل التعلم
-- **0.001**: للبيانات الكبيرة أو المعقدة
-- **0.01**: للبيانات العادية (افتراضي)
-- **0.1**: للبيانات الصغيرة أو البسيطة
+### Choix du taux d'apprentissage
+- **0.001** : Pour les données volumineuses ou complexes
+- **0.01** : Pour les données normales (par défaut)
+- **0.1** : Pour les petites données ou simples
 
-### عدد التكرارات
-- **100-500**: للاختبار السريع
-- **1000**: للاستخدام العادي (افتراضي)
-- **5000+**: للبيانات المعقدة
+### Nombre d'itérations
+- **100-500** : Pour les tests rapides
+- **1000** : Pour l'utilisation normale (par défaut)
+- **5000+** : Pour les données complexes
 
-## استكشاف الأخطاء
+## Dépannage
 
-### مشاكل شائعة وحلولها
+### Problèmes courants et solutions
 
-1. **الخوارزمية لا تتقارب**
-   - قلل معدل التعلم
-   - تأكد من تطبيق التطبيع
-   - زد عدد التكرارات
+1. **L'algorithme ne converge pas**
+   - Réduisez le taux d'apprentissage
+   - Assurez-vous d'appliquer la normalisation
+   - Augmentez le nombre d'itérations
 
-2. **أداء ضعيف**
-   - جرب معدل تعلم مختلف
-   - تحقق من جودة البيانات
-   - جرب طريقة تطبيع مختلفة
+2. **Performances faibles**
+   - Essayez un taux d'apprentissage différent
+   - Vérifiez la qualité des données
+   - Essayez une méthode de normalisation différente
 
-3. **خطأ في رفع الملف**
-   - تأكد من أن الملف بصيغة CSV
-   - تحقق من حجم الملف (أقل من 5 ميجابايت)
-   - تأكد من وجود بيانات رقمية
+3. **Erreur lors de l'import du fichier**
+   - Assurez-vous que le fichier est au format CSV
+   - Vérifiez la taille du fichier (moins de 5 mégaoctets)
+   - Assurez-vous qu'il y a des données numériques
 
-## المساهمة
+## Contribution
 
-نرحب بالمساهمات! يرجى:
-1. عمل Fork للمشروع
-2. إنشاء فرع جديد للميزة
-3. إجراء التغييرات
-4. إرسال Pull Request
+Les contributions sont les bienvenues ! Veuillez :
+1. Faire un Fork du projet
+2. Créer une nouvelle branche pour la fonctionnalité
+3. Apporter les modifications
+4. Envoyer une Pull Request
 
-## الترخيص
+## Licence
 
-هذا المشروع مرخص تحت رخصة MIT.
+Ce projet est sous licence MIT.
 
-## الدعم
+## Support
 
-للحصول على المساعدة أو الإبلاغ عن مشاكل، يرجى إنشاء Issue في المستودع.
+Pour obtenir de l'aide ou signaler des problèmes, veuillez créer une Issue dans le dépôt.
