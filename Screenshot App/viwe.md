@@ -6,7 +6,8 @@ A quick visual tour of the key pages in the “Gradient Descent Visualizer” Dj
 
 ## 1. Improvement Tips
 
-![Improvement Tips](Screenshot 1.png)
+![Improvement Tips]('Screenshot 1.png')
+
 
 **Description:**  
 Practical suggestions for tuning your model—adjust learning rate, increase iterations, normalize data, or try alternative scaling methods.
