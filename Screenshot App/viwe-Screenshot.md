@@ -16,7 +16,7 @@ Practical suggestions for tuning your model—adjust learning rate, increase ite
 
 ## 2. Upload CSV
 
-![CSV Upload](Screenshot 2.png)
+![CSV Upload](./Screenshot%202.png)
 
 **Description:**  
 Select and upload your CSV file (≤ 5 MB). The app validates file size and extension, then saves your data to begin the workflow.
@@ -25,7 +25,7 @@ Select and upload your CSV file (≤ 5 MB). The app validates file size and 
 
 ## 3. Descriptive Statistics
 
-![Descriptive Statistics](Screenshot 3.png)
+![Descriptive Statistics](./Screenshot%203.png)
 
 **Description:**  
 Automatically computed summary stats for each numeric column: mean, median, standard deviation, min/max, and missing‐value count.
@@ -34,7 +34,7 @@ Automatically computed summary stats for each numeric column: mean, median, stan
 
 ## 4. Data Preprocessing
 
-![Data Preprocessing](Screenshot 4.png)
+![Data Preprocessing](./Screenshot%204.png)
 
 **Description:**  
 Choose how to handle missing values (drop/fill), apply Standard or Min‑Max scaling, and enable One‑Hot encoding for categorical features.
@@ -43,7 +43,7 @@ Choose how to handle missing values (drop/fill), apply Standard or Min‑Max sca
 
 ## 5. Algorithm Configuration
 
-![Algorithm Configuration](Screenshot 5.png)
+![Algorithm Configuration](./Screenshot%205.png)
 
 **Description:**  
 Configure your Gradient Descent run: select Linear or Logistic Regression, set the learning rate (α) and number of iterations, then launch the model.
@@ -52,7 +52,7 @@ Configure your Gradient Descent run: select Linear or Logistic Regression, set t
 
 ## 6. Live Results
 
-![Live Results](Screenshot 6.png)
+![Live Results](./Screenshot%206.png)
 
 **Description:**  
 View final θ parameters, MSE or Accuracy, and the learning‑curve plot showing cost vs. iterations. Gain immediate insight into model performance.
