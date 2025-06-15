@@ -6,7 +6,7 @@ A quick visual tour of the key pages in the “Gradient Descent Visualizer” Dj
 
 ## 1. Improvement Tips
 
-![Improvement Tips]('Screenshot 1.png')
+![Improvement Tips](./Screenshot%201.png)
 
 
 **Description:**  
