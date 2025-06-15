@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=matplotlib&logoColor=white" alt="Matplotlib">
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
 </p>
----
+
 
 Application Django complète pour l'implémentation de l'algorithme Gradient Descent pour la régression linéaire et logistique avec une interface utilisateur en français.
 
