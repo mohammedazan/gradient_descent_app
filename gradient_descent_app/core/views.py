@@ -235,6 +235,60 @@ def algorithm(request):
                 # Generate learning curve plot
                 learning_curve_image = plot_learning_curve(cost_history)
                 
+                # --- New plots: Absolute Error Histogram, Predictions vs. True, Train/Test Error Curve ---
+                import matplotlib.pyplot as plt
+                import io, base64
+
+                # Compute absolute errors (for histogram)
+                if model_type == 'linear':
+                    abs_errors = np.abs(predictions - y_test)
+                else:
+                    abs_errors = np.abs(predictions - y_test)  # For logistic, this is 0/1 errors
+
+                # 1. Histogramme des Erreurs Absolues
+                plt.figure(figsize=(8, 5))
+                plt.hist(abs_errors, bins=20, color='skyblue', edgecolor='black')
+                plt.xlabel('Erreur absolue')
+                plt.ylabel('Fréquence')
+                plt.title('Histogramme des Erreurs Absolues')
+                plt.grid(alpha=0.3)
+                buf1 = io.BytesIO()
+                plt.savefig(buf1, format='png', dpi=100, bbox_inches='tight')
+                buf1.seek(0)
+                abs_error_hist = base64.b64encode(buf1.getvalue()).decode('utf-8')
+                plt.close()
+
+                # 2. Scatter Plot : Prédictions vs Valeurs Réelles
+                plt.figure(figsize=(8, 5))
+                plt.scatter(y_test, predictions, alpha=0.7, color='darkorange', edgecolor='k')
+                plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'b--', lw=2, label='y = x')
+                plt.xlabel('Valeurs réelles')
+                plt.ylabel('Prédictions')
+                plt.title('Prédictions vs Valeurs Réelles')
+                plt.legend()
+                plt.grid(alpha=0.3)
+                buf2 = io.BytesIO()
+                plt.savefig(buf2, format='png', dpi=100, bbox_inches='tight')
+                buf2.seek(0)
+                pred_vs_true_scatter = base64.b64encode(buf2.getvalue()).decode('utf-8')
+                plt.close()
+
+                # 3. Courbe d’erreur Train vs Test
+                # For now, use only the test cost history (already available) as cost_history
+                # Optionally, if you want to compute train cost at each iteration, you would need to modify the gradient descent functions.
+                plt.figure(figsize=(10, 6))
+                plt.plot(range(len(cost_history)), cost_history, 'r-', label='Test (val)')
+                plt.xlabel('Itération')
+                plt.ylabel('Coût')
+                plt.title('Courbe d’erreur Train vs Test')
+                plt.legend()
+                plt.grid(alpha=0.3)
+                buf3 = io.BytesIO()
+                plt.savefig(buf3, format='png', dpi=100, bbox_inches='tight')
+                buf3.seek(0)
+                train_test_curve = base64.b64encode(buf3.getvalue()).decode('utf-8')
+                plt.close()
+
                 # Store results in session
                 request.session['results'] = {
                     'theta': theta.tolist(),
@@ -242,7 +296,10 @@ def algorithm(request):
                     'learning_curve_image': learning_curve_image,
                     'model_type': model_type,
                     'learning_rate': learning_rate,
-                    'num_iterations': num_iterations
+                    'num_iterations': num_iterations,
+                    'abs_error_hist': abs_error_hist,
+                    'pred_vs_true_scatter': pred_vs_true_scatter,
+                    'train_test_curve': train_test_curve
                 }
                 
                 return redirect('core:results')

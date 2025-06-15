@@ -108,20 +108,72 @@
                     </div>
                 </div>
 
-                <!-- Learning Curve -->
+                <!-- Charts Section - Reorganized into 2 rows -->
                 <div class="results-section">
-                    <h3 class="text-center mb-4">Courbe d'apprentissage</h3>
-                    <div class="learning-curve-container">
-                        <img src="data:image/png;base64,{{ results.learning_curve_image }}"
-                             alt="Courbe d'apprentissage"
-                             class="img-fluid">
+                    <h3 class="text-center mb-4">Analyse Graphique</h3>
+                    
+                    <!-- First Row: Learning Curve & Error Histogram -->
+                    <div class="row mb-4">
+                        <div class="col-lg-6 mb-4">
+                            <div class="chart-container">
+                                <h5 class="text-center mb-3">Courbe d'apprentissage</h5>
+                                <div class="chart-image-wrapper">
+                                    <img src="data:image/png;base64,{{ results.learning_curve_image }}"
+                                         alt="Courbe d'apprentissage"
+                                         class="img-fluid chart-image">
+                                </div>
+                                <div class="alert alert-info mt-3" role="alert">
+                                    <strong>Courbe d'apprentissage :</strong>
+                                    Montre comment la fonction de coût diminue à chaque itération.
+                                    Une courbe descendante indique que l'algorithme apprend correctement.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6 mb-4">
+                            <div class="chart-container">
+                                <h5 class="text-center mb-3">Histogramme des Erreurs Absolues</h5>
+                                <div class="chart-image-wrapper">
+                                    <img src="data:image/png;base64,{{ results.abs_error_hist }}" 
+                                         alt="Histogramme des Erreurs Absolues" 
+                                         class="img-fluid chart-image">
+                                </div>
+                                <div class="alert alert-info mt-3" role="alert">
+                                    <strong>Interprétation :</strong> Visualise la distribution des erreurs absolues entre les valeurs prédites et réelles.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="alert alert-info mt-3" role="alert">
-                        <strong>Courbe d'apprentissage :</strong>
-                        Montre comment la fonction de coût diminue à chaque itération.
-                        Une courbe descendante indique que l'algorithme apprend correctement.
-                        Si la courbe est plate à la fin, cela signifie que l'algorithme a atteint la convergence.
+                    <!-- Second Row: Predictions vs True Values & Train vs Test -->
+                    <div class="row mb-4">
+                        <div class="col-lg-6 mb-4">
+                            <div class="chart-container">
+                                <h5 class="text-center mb-3">Prédictions vs Valeurs Réelles</h5>
+                                <div class="chart-image-wrapper">
+                                    <img src="data:image/png;base64,{{ results.pred_vs_true_scatter }}" 
+                                         alt="Prédictions vs Valeurs Réelles" 
+                                         class="img-fluid chart-image">
+                                </div>
+                                <div class="alert alert-info mt-3" role="alert">
+                                    <strong>Interprétation :</strong> Chaque point représente une prédiction comparée à la valeur réelle correspondante. Plus les points sont proches de la diagonale, plus les prédictions sont précises.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6 mb-4">
+                            <div class="chart-container">
+                                <h5 class="text-center mb-3">Courbe d'erreur Train vs Test</h5>
+                                <div class="chart-image-wrapper">
+                                    <img src="data:image/png;base64,{{ results.train_test_curve }}" 
+                                         alt="Courbe d'erreur Train vs Test" 
+                                         class="img-fluid chart-image">
+                                </div>
+                                <div class="alert alert-info mt-3" role="alert">
+                                    <strong>Interprétation :</strong> Affiche l'évolution du coût sur l'ensemble de test à chaque itération. Permet de diagnostiquer le surapprentissage ou le sous-apprentissage.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -239,11 +291,50 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.learning-curve-container img {
+/* Enhanced chart styling for professional layout */
+.chart-container {
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-image-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.chart-image {
     max-width: 100%;
     height: auto;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.chart-image:hover {
+    transform: scale(1.02);
+}
+
+.chart-container h5 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #77ACA2;
+    padding-bottom: 0.5rem;
+}
+
+.chart-container .alert {
+    margin-top: auto;
+    font-size: 0.9rem;
+    border-radius: 8px;
 }
 
 .results-section {
@@ -275,6 +366,17 @@
     border-radius: 10px;
 }
 
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .chart-container {
+        margin-bottom: 2rem;
+    }
+    
+    .chart-image-wrapper {
+        min-height: 250px;
+    }
+}
+
 @media (max-width: 768px) {
     .performance-metric {
         font-size: 1.5rem;
@@ -283,6 +385,14 @@
     
     .equation {
         font-size: 0.9rem;
+    }
+    
+    .chart-container {
+        padding: 1rem;
+    }
+    
+    .chart-image-wrapper {
+        min-height: 200px;
     }
 }
 </style>
