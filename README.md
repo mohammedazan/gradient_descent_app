@@ -11,6 +11,8 @@
 
 Application Django complète pour l'implémentation de l'algorithme Gradient Descent pour la régression linéaire et logistique avec une interface utilisateur en français.
 
+![Aperçu de l'application](./Screenshot%20App/POSTER.png)
+
 ## Fonctionnalités
 
 - **Import de données** : Import et analyse de fichiers CSV
